@@ -1,4 +1,5 @@
 *node_modules/
 *dist/
 thunder-tests/
+*public/
 .env
