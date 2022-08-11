@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query } from '@nestjs/common';
 import { AirportsService } from './airports.service';
 import { airportMaxCountDto } from './dto/airport.max_count.dto';
 import { AirportParams } from './dto/airport.params.dto';
@@ -20,8 +20,10 @@ export class AirportsController {
 
   @Get('nearby/:max_count?')
   async getNearby(
-    @Body() coordinates: CoordinatesDto, 
-    @Param() params: airportMaxCountDto): Promise<AirportEntity[]> {
+    @Param() params: airportMaxCountDto,
+    @Query() coordinates: CoordinatesDto
+    ): Promise<AirportEntity[]> {
+      console.log(coordinates);
       return this.airportsService.getNearby(coordinates, params.max_count);
   }
 
