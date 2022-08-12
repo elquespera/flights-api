@@ -1,0 +1,57 @@
+.airport-search {
+  width: 300px;
+  position: relative;
+}
+
+.airport-search-input {
+  padding: 0.5em 1em;
+  width: 100%;
+}
+
+.airport-search-flyout {
+  position: absolute;
+  /* display: none; */
+  min-width: 100%;
+  min-height: 300px;
+  background-color: white;
+  border: 1px solid beige;  
+}
+
+.airport-search-input:focus + .airport-search-flyout {
+  display: block;
+}
+
+ul.airport-search-list {
+  display: flex;
+  flex-flow: column;
+  cursor: pointer;
+}
+
+ul.airport-search-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+}
+
+ul.airport-search-list li .airport-search-distance {
+  padding: 0.2em 0.4em;
+  border-radius: 0.4em;
+  font-size: 0.8em;
+  color: white;
+  background-color: firebrick;
+}
+
+ul.airport-search-list li:hover {
+  background-color: beige;
+}
+
+ul.airport-search-list li:first-of-type {
+  margin-top: 0.5em;
+}
+
+.airport-search-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
