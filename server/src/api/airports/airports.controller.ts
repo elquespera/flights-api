@@ -18,13 +18,12 @@ export class AirportsController {
     return this.airportsService.getAllDetailed();
   }
 
-  @Get('nearby/:max_count?')
-  async getNearby(
-    @Param() params: airportMaxCountDto,
+  @Get('distance')
+  async getDistance(
     @Query() coordinates: CoordinatesDto
-    ): Promise<AirportEntity[]> {
+    ): Promise<AirportCodeDistanceEntity[]> {
       console.log(coordinates);
-      return this.airportsService.getNearby(coordinates, params.max_count);
+      return this.airportsService.getDistance(coordinates);
   }
 
   @Get(':iata_code')

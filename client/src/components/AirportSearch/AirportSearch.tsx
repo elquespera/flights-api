@@ -3,8 +3,10 @@ import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'rea
 import AirportLoader from './AirportLoader';
 import AirportNearbyLoader from './AirportNearbyLoader';
 import AirporSearchItem from './AirportSearchItem';
-import { AirportEntity } from '../../utils/common.types';
+import { AirportCodeDistanceEntity, AirportEntity } from '../../utils/common.types';
 
+const MAX_NEARBY_AIRPORTS = 5;
+const MAX_SEARCH_ITEMS = 10;
 
 const filterAirports = (airports: AirportEntity[], keyword = '', max_count = 10): AirportEntity[] => {
   if (keyword === '') return [];
@@ -21,35 +23,47 @@ const filterAirports = (airports: AirportEntity[], keyword = '', max_count = 10)
   return res;
 }
 
-
 const AirportSearch = () => {
-  const [allAirports, setAllAirports] = useState([]);
-  const [nearbyAirports, setNearbyAirports] = useState([]);
+  const [allAirports, setAllAirports] = useState<AirportEntity[]>([]);
+  const [nearbyAirports, setNearbyAirports] = useState<AirportCodeDistanceEntity[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
+  const checkNearbyAirports = () => {
+    if (nearbyAirports.length > 0) {
+      let airports = nearbyAirports.map((item, index) => {
+        const airport = allAirports.find(airport => airport.iata === item.iata);
+        if (airport && index < MAX_NEARBY_AIRPORTS) {
+          airport.distance = item.distance;
+        }
+        return airport;
+      });
+      setAllAirports(airports as AirportEntity[]);
+    }
+  }
+
   useEffect(() => {
-    new AirportNearbyLoader(5, (data: any) => {
-      setNearbyAirports(data);
-    });
     new AirportLoader((data: any) => {
       setAllAirports(data);
     });
-
+    new AirportNearbyLoader((data: any) => {
+      setNearbyAirports(data);
+    });
   }, []);
 
+  useEffect(() => checkNearbyAirports(), [nearbyAirports]);
+
   const searchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
+    let value = event.target.value;
+    value = value.toLocaleLowerCase().trim();
+    setSearchValue(value);
   }
 
-  let matchedAirports: AirportEntity[] = [];
+  let matchedAirports: AirportEntity[] = []; 
 
   if (searchValue.length > 0) {
-    let allMatched = filterAirports(allAirports, searchValue, 10);
-    const nearbyMatched = filterAirports(nearbyAirports, searchValue);
-    allMatched = allMatched.filter(airport => !nearbyMatched.find(near => near.iata === airport.iata));
-    matchedAirports = [...nearbyMatched, ...allMatched];
+    matchedAirports = filterAirports(allAirports, searchValue, MAX_SEARCH_ITEMS);
   } else {
-    matchedAirports = nearbyAirports;
+    matchedAirports = allAirports.slice(0, MAX_NEARBY_AIRPORTS);
   }
 
   const matched = matchedAirports.map(({ name, stripped_name, iata, distance }) => {

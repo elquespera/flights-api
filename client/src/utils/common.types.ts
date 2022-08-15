@@ -33,5 +33,11 @@ interface AirportEntity {
   distance?: number;
 }
 
+interface AirportCodeDistanceEntity {
+  iata: string;
+  distance: number;
+}
 
-export type { GPSCoordinates, GPSAquiredCallback, DataLoadedCallback, AirportEntity };
+
+export type { GPSCoordinates, GPSAquiredCallback, DataLoadedCallback, 
+  AirportEntity, AirportCodeDistanceEntity };

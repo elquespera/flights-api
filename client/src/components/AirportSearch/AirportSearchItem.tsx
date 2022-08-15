@@ -2,8 +2,8 @@ import React from 'react';
 
 const AirporSearchItem = ({ name = '', distance = 0, search = '', searchName = '', nearby = false }) => {
   let airportName;
-  const s_name = (searchName || name).toLowerCase();
-  const searchIndex = s_name.indexOf(search.toLowerCase());
+  const s_name = name.toLowerCase();
+  const searchIndex = s_name.indexOf(search);
   if (search.length > 0 && searchIndex >= 0) {
     airportName = (
       <span>

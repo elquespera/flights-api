@@ -23,3 +23,8 @@ class AirportEntity {
 
   distance?: number;
 }
+
+class AirportCodeDistanceEntity {
+  iata: string;
+  distance: number;
+}

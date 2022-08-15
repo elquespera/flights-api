@@ -4,8 +4,8 @@ import DataLoader from "../../utils/DataLoader/DataLoader";
 class AirportNearbyLoader extends DataLoader {
   private coordinates: GPSCoordinates | null = null;
 
-  constructor(max_count = 5, callback?: GPSAquiredCallback) {
-    super(`airports/nearby/${max_count}`, {}, callback);
+  constructor(callback?: GPSAquiredCallback) {
+    super(`airports/distance`, {}, callback);
   }
 
   public async get(): Promise<any> {

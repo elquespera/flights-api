@@ -29,7 +29,7 @@ export class AirportsService {
     return airport;
   }
 
-  async getNearby(coordinates: CoordinatesDto, max_count = 10): Promise<AirportEntity[]> {
+  async getDistance(coordinates: CoordinatesDto): Promise<AirportCodeDistanceEntity[]> {
     const getDistance = (coord1: CoordinatesDto, coord2: CoordinatesDto) => {
       const R = 6371e3;
       const φ1 = coord1.latitude * Math.PI/180;
@@ -45,23 +45,21 @@ export class AirportsService {
     }
 
     let airports = await this.airportInfo();
-    airports = airports.map((airport) => {
-      airport.distance = getDistance(
-        coordinates, 
-        { 
-          latitude: airport.latitude, 
-          longitude: airport.longitude }
-        );
-      return airport;
-    });
 
-    airports = airports.filter(({ distance }) => distance < this.nearbyRange);
-    airports.sort((a, b) => a.distance - b.distance);
-    if (max_count) {
-      airports = airports.filter((_airport, index) => index < max_count);
-    }
-    return airports;
-  }
+    return airports
+    .map((airport) => {
+      return {
+        iata: airport.iata,
+        distance: getDistance(
+          coordinates, 
+          { 
+            latitude: airport.latitude, 
+            longitude: airport.longitude }
+          )  
+      }
+    })
+    .sort((a, b) => a.distance - b.distance);
+  }  
 
 
 
