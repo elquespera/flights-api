@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const AirporSearchItem = ({ name = '', distance = 0, search = '', searchName = '', nearby = false }) => {
+const AirporSearchItem = ({ name = '', searchName = '', iata = '', distance = 0, search = '', nearby = false }) => {
   let airportName;
   const s_name = name.toLowerCase();
   const searchIndex = s_name.indexOf(search);
@@ -16,8 +17,13 @@ const AirporSearchItem = ({ name = '', distance = 0, search = '', searchName = '
     airportName = name;
   }
 
+  const navigate = useNavigate();
+  const airportSelect = (iata: string) => {
+    navigate(`/airport/${iata}`);
+  }
+
   return (
-    <li>
+    <li onClick={() => airportSelect(iata)}>
       <span className='airport-search-list-item'>
         <span className='airport-search-icon material-icons'>
           {nearby ? 'near_me' : 'flight'}

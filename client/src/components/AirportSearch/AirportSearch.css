@@ -10,7 +10,7 @@
 
 .airport-search-flyout {
   position: absolute;
-  /* display: none; */
+  display: none;
   min-width: 100%;
   min-height: 300px;
   background-color: white;

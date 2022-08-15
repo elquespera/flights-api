@@ -1,27 +1,13 @@
 import './AirportSearch.css';
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import AirportLoader from './AirportLoader';
 import AirportNearbyLoader from './AirportNearbyLoader';
 import AirporSearchItem from './AirportSearchItem';
 import { AirportCodeDistanceEntity, AirportEntity } from '../../utils/common.types';
+import filterAirports from './filterAirports';
 
 const MAX_NEARBY_AIRPORTS = 5;
 const MAX_SEARCH_ITEMS = 10;
-
-const filterAirports = (airports: AirportEntity[], keyword = '', max_count = 10): AirportEntity[] => {
-  if (keyword === '') return [];
-  const res = [];
-  keyword = keyword.toLowerCase();
-  for (let i = 0; i < airports.length; i += 1) {
-    const airport = airports[i];
-    const airportName = airport.stripped_name.toLowerCase();
-    if (airportName.includes(keyword)) {
-      res.push(airport);
-      if (res.length >= max_count) break;
-    }
-  }
-  return res;
-}
 
 const AirportSearch = () => {
   const [allAirports, setAllAirports] = useState<AirportEntity[]>([]);
@@ -63,13 +49,15 @@ const AirportSearch = () => {
   if (searchValue.length > 0) {
     matchedAirports = filterAirports(allAirports, searchValue, MAX_SEARCH_ITEMS);
   } else {
-    matchedAirports = allAirports.slice(0, MAX_NEARBY_AIRPORTS);
+    if (nearbyAirports.length > 0)
+      matchedAirports = allAirports.slice(0, MAX_NEARBY_AIRPORTS);
   }
 
   const matched = matchedAirports.map(({ name, stripped_name, iata, distance }) => {
     return <AirporSearchItem
       key={iata}
       name={name}
+      iata={iata}
       distance={distance} 
       search={searchValue}
       searchName={stripped_name}
