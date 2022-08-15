@@ -3,6 +3,7 @@ class AirportEntity {
   id: number;
   iata: string;
   name: string;
+  stripped_name: string;
   city: string;
   country: string;
   

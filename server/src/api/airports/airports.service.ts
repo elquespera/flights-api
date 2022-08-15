@@ -84,7 +84,7 @@ export class AirportsService {
     let res = [];
 
     if (fetchFresh) {
-      console.log('Fetching fresh airport data...');
+      console.log('Fetching airport data...');
       res = await Promise.all(
         airportCodes.map(async (iata) => {
           try {
@@ -96,8 +96,15 @@ export class AirportsService {
         })
       );
       res = res.filter(info => info.id);
+      res = res.map(airport => {
+        return {
+          ...airport, 
+          stripped_name: airport.name.replace(/Airport|airport|International|international/g, '').trim(),
+        }
+      });
+
       await fsPromises.writeFile(this.dataFileName, JSON.stringify(res), { flag: 'w' });
-      console.log('Finished fetching airport data!');
+      console.log(`Fetched ${res.length} airports!`);
     }
   }
 
@@ -111,8 +118,8 @@ export class AirportsService {
   private async airportInfoStripped(): Promise<AirportEntity[]> {
     if (this._airportInfoStripped) return this._airportInfoStripped;
     const airports = await this.airportInfo();
-    this._airportInfoStripped = airports.map(({ id, iata, name, city, country }) => {
-      return { id, iata, name, city, country };
+    this._airportInfoStripped = airports.map(({ id, iata, name, stripped_name, city, country }) => {
+      return { id, iata, name, stripped_name, city, country };
     });
     return this._airportInfoStripped;
   }
