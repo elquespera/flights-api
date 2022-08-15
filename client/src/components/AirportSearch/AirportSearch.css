@@ -36,6 +36,7 @@ ul.airport-search-list li {
 
 ul.airport-search-list li .airport-search-distance {
   padding: 0.2em 0.4em;
+  white-space: nowrap;
   border-radius: 0.4em;
   font-size: 0.8em;
   color: white;
@@ -54,4 +55,13 @@ ul.airport-search-list li:first-of-type {
   display: flex;
   align-items: center;
   gap: 0.5em;
+}
+
+.airport-search-no-match {
+  display: flex;
+  padding-top: 1em;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.5em;
+  opacity: 0.6;
 }

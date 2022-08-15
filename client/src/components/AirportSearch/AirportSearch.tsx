@@ -1,42 +1,81 @@
 import './AirportSearch.css';
-import React from 'react';
-import { GPSCoordinates } from '../../utils/common.types';
+import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 import AirportLoader from './AirportLoader';
 import AirportNearbyLoader from './AirportNearbyLoader';
+import AirporSearchItem from './AirportSearchItem';
+import { AirportEntity } from '../../utils/common.types';
 
 
-let airportLoader: AirportLoader;
-let airportNearbyLoader: AirportNearbyLoader;
-
-const getAirports = async () => {
-  airportLoader = new AirportLoader();
-  await airportLoader.get();
-  // console.log(airportLoader.data);
-
-  airportNearbyLoader = new AirportNearbyLoader(5, (coordinates: GPSCoordinates, data: any) => {
-    console.log(coordinates);
-    // console.log(data);
-  });
+const filterAirports = (airports: AirportEntity[], keyword = '', max_count = 10): AirportEntity[] => {
+  if (keyword === '') return [];
+  const res = [];
+  keyword = keyword.toLowerCase();
+  for (let i = 0; i < airports.length; i += 1) {
+    const airport = airports[i];
+    const airportName = airport.stripped_name.toLowerCase();
+    if (airportName.includes(keyword)) {
+      res.push(airport);
+      if (res.length >= max_count) break;
+    }
+  }
+  return res;
 }
 
-getAirports();
 
 const AirportSearch = () => {
+  const [allAirports, setAllAirports] = useState([]);
+  const [nearbyAirports, setNearbyAirports] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    new AirportNearbyLoader(5, (data: any) => {
+      setNearbyAirports(data);
+    });
+    new AirportLoader((data: any) => {
+      setAllAirports(data);
+    });
+
+  }, []);
+
+  const searchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  }
+
+  let matchedAirports: AirportEntity[] = [];
+
+  if (searchValue.length > 0) {
+    let allMatched = filterAirports(allAirports, searchValue, 10);
+    const nearbyMatched = filterAirports(nearbyAirports, searchValue);
+    allMatched = allMatched.filter(airport => !nearbyMatched.find(near => near.iata === airport.iata));
+    matchedAirports = [...nearbyMatched, ...allMatched];
+  } else {
+    matchedAirports = nearbyAirports;
+  }
+
+  const matched = matchedAirports.map(({ name, stripped_name, iata, distance }) => {
+    return <AirporSearchItem
+      key={iata}
+      name={name}
+      distance={distance} 
+      search={searchValue}
+      searchName={stripped_name}
+      nearby={distance ? true : false } />
+  });
+
   return (
     <div className="airport-search">
-      <input type="input" className='airport-search-input'></input>
+      <input type="input" className='airport-search-input' onChange={searchInputChange}/>
       <div className="airport-search-flyout">
-        <ul className='airport-search-list'>
-          <li>
-            <span className='airport-search-list-item'>
-              <span className='airport-search-icon material-icons'>flight</span>
-              <span className='airport-name'>Prague</span>
+        {matchedAirports.length > 0
+        ? <ul className='airport-search-list'>
+            {matched}
+          </ul>
+        : <div className='airport-search-no-match'>
+            <span>
+              No airports found for&nbsp;<strong>{searchValue}</strong>
             </span>
-            <span className='airport-search-distance'>150km</span></li>
-          <li>Vienna <span className='airport-search-distance'>200km</span></li>
-          <li>Linz <span className='airport-search-distance'>130km</span></li>
-          <li>Salzburg <span className='airport-search-distance'>250km</span></li>
-        </ul>
+          </div>
+        }
       </div>
     </div>
   )
