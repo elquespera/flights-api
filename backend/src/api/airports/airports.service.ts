@@ -4,14 +4,15 @@ import * as fsPromises from 'fs/promises';
 import * as fs from 'fs';
 import * as path from 'path';
 import airportCodes from './airport.codes';
-import { CoordinatesDto } from './dto/coordinates.dto';
+import { CoordinatesDto } from '../../utils/coordinates.dto';
+import { calculateDistance } from 'src/utils/utils';
 
 @Injectable()
 export class AirportsService {
   private _airportInfo: AirportEntity[];  
   private _airportInfoStripped: AirportEntity[];  
   private dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'airports.json');
-  private expiry = 1 * 24 * 60 * 60 * 1000; // 1 day
+  private expiry = 30 * 24 * 60 * 60 * 1000; // 1 day
   private nearbyRange = 300; //km
 
   async getAll(): Promise<AirportEntity[]> {
@@ -30,39 +31,36 @@ export class AirportsService {
   }
 
   async getDistance(coordinates: CoordinatesDto): Promise<AirportCodeDistanceEntity[]> {
-    const getDistance = (coord1: CoordinatesDto, coord2: CoordinatesDto) => {
-      const R = 6371e3;
-      const φ1 = coord1.latitude * Math.PI/180;
-      const φ2 = coord2.latitude * Math.PI/180;
-      const Δφ = (coord2.latitude - coord1.latitude) * Math.PI/180;
-      const Δλ = (coord2.longitude - coord1.longitude) * Math.PI/180;
-
-      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return Math.round(R * c / 1000);
-    }
-
     let airports = await this.airportInfo();
 
     return airports
-    .map((airport) => {
-      return {
-        iata: airport.iata,
-        distance: getDistance(
-          coordinates, 
-          { 
-            latitude: airport.latitude, 
-            longitude: airport.longitude }
-          )  
-      }
-    })
-    .sort((a, b) => a.distance - b.distance);
-  }  
+      .map(({ iata, latitude, longitude }) => {
+        return {
+          iata,
+          distance: calculateDistance(coordinates, { latitude, longitude }),
+        }
+      })
+      .sort((a, b) => a.distance - b.distance);
+  }
 
+  async getNearby(coordinates: CoordinatesDto, max_count = 5): Promise<AirportEntity[]> {
+    let airports = await this.airportInfo();
 
-
+    return airports
+      .map((airport) => {
+        const airportCoordinates = {
+          latitude: airport.latitude, 
+          longitude: airport.longitude,
+        }
+        return {
+          ...airport,
+          distance: calculateDistance(coordinates, airportCoordinates),
+        }
+      })
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, max_count);
+  }
+  
   private async checkData() {
     const apiOptions = {
       method: 'GET',
