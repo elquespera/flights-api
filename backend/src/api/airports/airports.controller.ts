@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Query } from '@nestjs/common';
 import { AirportsService } from './airports.service';
 import { airportMaxCountDto } from './dto/airport.max_count.dto';
-import { AirportParams } from './dto/airport.params.dto';
+import { AirportCodesQuery, AirportParams } from './dto/airport.params.dto';
 import { CoordinatesDto } from '../../utils/coordinates.dto';
 
 @Controller('api/airports')
@@ -14,8 +14,8 @@ export class AirportsController {
   }
 
   @Get('detailed')
-  async getShort(): Promise<AirportEntity[]> {
-    return this.airportsService.getAllDetailed();
+  async getDetailed(@Query() { codes }: AirportCodesQuery): Promise<AirportEntity[]> {
+    return this.airportsService.getDetailed(codes);
   }
 
   @Get('distance')

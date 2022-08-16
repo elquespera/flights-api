@@ -19,8 +19,12 @@ export class AirportsService {
     return this.airportInfoStripped();
   }
   
-  async getAllDetailed(): Promise<AirportEntity[]> {
-    return this.airportInfo();
+  async getDetailed(codes?: string[]): Promise<AirportEntity[]> {
+    let airports = await this.airportInfo();
+    if (codes) {
+      airports = codes.map(code => airports.find(({ iata }) => iata === code));
+    }
+    return airports;
   }
 
   async getOne(iata_code: string): Promise<AirportEntity> {
