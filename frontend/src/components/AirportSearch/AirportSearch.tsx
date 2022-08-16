@@ -19,7 +19,7 @@ const AirportSearch = () => {
     if (nearbyAirports.length > 0) {
       let airports = nearbyAirports.map((item, index) => {
         const airport = allAirports.find(airport => airport.iata === item.iata);
-        if (airport && index < MAX_NEARBY_AIRPORTS) {
+       if (airport && index < MAX_NEARBY_AIRPORTS) {
           airport.distance = item.distance;
         }
         return airport;

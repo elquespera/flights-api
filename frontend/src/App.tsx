@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Airport from './components/Airport/Airport';
 import AirportSearch from './components/AirportSearch/AirportSearch';
+import Home from './components/Home/Home';
 
 const App = () => {
   return (
@@ -13,14 +14,15 @@ const App = () => {
           <h1>Search airports</h1>
           <AirportSearch />
         </header>
+        <section className='content'>
           <Routes>
+            <Route index element={<Home />}/>
             <Route path="airport">
               <Route path=":iata/*" element={<Airport />} />
             </Route>
           </Routes>
+        </section>
       </BrowserRouter>
-      <div>
-      </div>
     </main>
   )
 }
