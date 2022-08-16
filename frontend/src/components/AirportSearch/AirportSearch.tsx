@@ -1,4 +1,4 @@
-import './AirportSearch.css';
+import './AirportSearch.scss';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import AirportLoader from './AirportLoader';
 import AirportNearbyLoader from './AirportNearbyLoader';
@@ -13,6 +13,7 @@ const AirportSearch = () => {
   const [allAirports, setAllAirports] = useState<AirportEntity[]>([]);
   const [nearbyAirports, setNearbyAirports] = useState<AirportCodeDistanceEntity[]>([]);
   const [searchValue, setSearchValue] = useState('');
+  const [active, setActive] = useState(false);
 
   const checkNearbyAirports = () => {
     if (nearbyAirports.length > 0) {
@@ -65,9 +66,18 @@ const AirportSearch = () => {
   });
 
   return (
-    <div className="airport-search">
-      <input type="input" className='airport-search-input' onChange={searchInputChange}/>
+    <div className={'airport-search ' + (active ? 'active' : '')}>
+      <input type='text' 
+        className='airport-search-input' 
+        placeholder='Choose airport'
+        onChange={searchInputChange}
+        onFocus={() => setActive(true)}
+        onBlur={() => setActive(false)}
+      />
       <div className="airport-search-flyout">
+        <button className='flyout-back-button' title='Back'>
+          <span className='material-icons'>arrow_back</span>
+        </button>
         {matchedAirports.length > 0
         ? <ul className='airport-search-list'>
             {matched}

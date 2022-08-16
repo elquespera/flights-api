@@ -1,4 +1,3 @@
-import React, { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AirporSearchItem = ({ name = '', searchName = '', iata = '', distance = 0, search = '', nearby = false }) => {
