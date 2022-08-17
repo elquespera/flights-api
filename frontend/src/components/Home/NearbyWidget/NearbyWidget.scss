@@ -1,0 +1,11 @@
+ul.airport-list {
+  display: flex;
+  flex-flow: column;
+  gap: 0.5em;
+li {
+    a {
+      display: flex;
+      gap: 0.5em;
+    }
+  }
+}
