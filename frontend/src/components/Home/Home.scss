@@ -1,15 +1,20 @@
 .home-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  align-items: start;
+  align-items: stretch;
   justify-content: center;
-  gap: 1em;
+  gap: 3em;
 }
 
 .home-widget {
   padding: 2em;
-  border: 1px solid gray;
-  border-radius: 1.5em;
+  border: 1px solid #c8c8c8;
+  border-radius: 1em;
   min-width: 300px;
   overflow: hidden;
+
+  h3 {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+  }
 }

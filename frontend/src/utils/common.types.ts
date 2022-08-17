@@ -5,7 +5,7 @@ interface GPSCoordinates {
 
 type DataLoadedCallback = (data: any) => void;
 
-type GPSAquiredCallback = (data: any) => void; 
+type GPSAquiredCallback = (data: any, coordinates: GPSCoordinates | null) => void; 
 
 
 interface AirportEntity {

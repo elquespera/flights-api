@@ -1,16 +1,9 @@
 import './MapWidget.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AirportEntity } from '../../../utils/common.types';
+import { AirportEntity, GPSCoordinates } from '../../../utils/common.types';
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-
-export const droppedPin = {
-  viewBox: "0 0 24 24",
-  fillColor: 'black',
-  // anchor: new google.maps.Point(12, 24),
-  path: "M6 20h12c.55 0 1 .45 1 1s-.45 1-1 1H6c-.55 0-1-.45-1-1s.45-1 1-1zm6-13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-5c3.27 0 7 2.46 7 7.15 0 2.98-2.13 6.12-6.39 9.39-.36.28-.86.28-1.22 0C7.13 15.26 5 12.13 5 9.15 5 4.46 8.73 2 12 2z",
-}
 
 const MapRender = (status: Status) => {
   if (status === Status.SUCCESS) return <></>;
@@ -18,14 +11,20 @@ const MapRender = (status: Status) => {
 };
 
 const Map = ({
-  airports
+  airports,
+  coordinates,
 }: {
-  airports: AirportEntity[]
+  airports: AirportEntity[],
+  coordinates: GPSCoordinates | null
 }) => {
 
+  const center = (): google.maps.LatLngLiteral => {
+    if (coordinates) 
+      return {lat: coordinates.latitude, lng: coordinates.longitude };
+    return {lat: 54.305282, lng: 26.843193 };
+  }
+
   const navigate = useNavigate();
-  const zoom = 6;
-  const center = { lat: 48.9750528, lng: 14.4441344 };
 
   const [map, setMap] = useState<google.maps.Map | undefined>(undefined);
   const ref = useRef(null);
@@ -33,15 +32,29 @@ const Map = ({
   useEffect(() => {
     if (ref.current && !map) {
       setMap(new window.google.maps.Map(ref.current, {
-        center,
-        zoom,
+        center: center(),
+        zoom: 7,
+        disableDefaultUI: true,
+        styles: [
+          {featureType: "road", stylers: [{visibility: "off"}]},
+          {featureType: "poi", stylers: [{visibility: "off"}]},
+          {featureType: "transit", stylers: [{visibility: "off"}]},
+        ]
       }));      
     }
   }, [ref, map]);
 
-  useEffect(() => {
+  useEffect(() => {  
     let markers: (google.maps.Marker | undefined)[] = [];
     if (map) {
+      const droppedPin: google.maps.Symbol = {
+        path: "M21 14.58c0-.36-.19-.69-.49-.89L13 9V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-7.51 4.69a1.05 1.05 0 0 0 .87 1.89L10 13.5V19l-1.8 1.35a.48.48 0 0 0-.2.4v.59c0 .33.32.57.64.48L11.5 21l2.86.82c.32.09.64-.15.64-.48v-.59a.48.48 0 0 0-.2-.4L13 19v-5.5l6.64 2.08c.68.21 1.36-.3 1.36-1z",
+        fillOpacity: 1,
+        fillColor: '#222222',
+        scale: 1.2,
+        strokeWeight: 0,
+        labelOrigin: new google.maps.Point(8, -9),
+      }      
       markers = airports.map(({ name, iata, latitude, longitude }) => {
         if (!latitude || !longitude) return;
         const marker = new google.maps.Marker();
@@ -49,9 +62,14 @@ const Map = ({
           map, 
           position: { lat: latitude, lng: longitude },
           title: name,
-          
-          // icon: 2
-          // icon: droppedPin,
+          icon: droppedPin,
+          label: {
+            text: name,
+            className: 'map-label',
+            fontWeight: 'bold',
+            fontSize: '12px',
+            color: 'white'
+          }
         });
         marker.addListener('click', () => navigate(`airport/${iata}`));
         return marker;
@@ -68,13 +86,15 @@ const Map = ({
   );
 }
 
-const MapWidget = ({ airports = [] }: { airports: AirportEntity[] }) => {
+const MapWidget = (
+  { airports, coordinates }: { airports: AirportEntity[], coordinates: GPSCoordinates | null }
+) => {
   return (
     <div className='map-widget home-widget'>
       <Wrapper 
         apiKey='putYourApiKeyHere'
         render={MapRender}>
-          <Map airports={airports}></Map>
+          <Map airports={airports} coordinates={coordinates}></Map>
       </Wrapper>
     </div>
   )
