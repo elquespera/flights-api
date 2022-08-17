@@ -28,11 +28,11 @@ export class AirportsController {
 
   @Get('nearby/:max_count?')
   async getNearby(
-    @Param('max_count') { max_count }: airportMaxCountDto,
+    @Param() params: airportMaxCountDto,
     @Query() coordinates: CoordinatesDto
     ): Promise<AirportEntity[]> {
       console.log(coordinates);
-      return this.airportsService.getNearby(coordinates, max_count);
+      return this.airportsService.getNearby(coordinates, params.max_count);
   }
 
   @Get(':iata_code')
