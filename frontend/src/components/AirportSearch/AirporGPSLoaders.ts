@@ -1,14 +1,15 @@
 import { GPSAquiredCallback, GPSCoordinates } from "../../utils/common.types";
 import DataLoader from "../../utils/DataLoader/DataLoader";
 
-class AirportNearbyLoader extends DataLoader {
+class AirportGPSLoader extends DataLoader {
   private coordinates: GPSCoordinates | null = null;
 
-  constructor(callback?: GPSAquiredCallback) {
-    super(`airports/distance`, {}, callback);
+  constructor(endpoint: string, params = {}, callback?: GPSAquiredCallback) {
+    super(`airports/${endpoint}`, params, callback);
   }
 
   public async get(): Promise<any> {
+
     const updateCoordinates = async (position: GeolocationPosition) => {
       if (position && position.coords) {
         const { latitude, longitude } = position.coords;
@@ -29,7 +30,19 @@ class AirportNearbyLoader extends DataLoader {
       this.coordinates = null;
     }
   }
-
 }
 
-export default AirportNearbyLoader;
+
+class AirportDistanceLoader extends AirportGPSLoader {
+  constructor(callback?: GPSAquiredCallback) {
+    super('distance', {}, callback);
+  }
+}
+
+class AirportNearbyLoader extends AirportGPSLoader { 
+  constructor(callback?: GPSAquiredCallback, max_count = 5) {
+    super('nearby', { max_count }, callback);
+  }
+}
+
+export { AirportNearbyLoader, AirportDistanceLoader };

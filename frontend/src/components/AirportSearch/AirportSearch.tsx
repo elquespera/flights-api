@@ -1,7 +1,7 @@
 import './AirportSearch.scss';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import AirportLoader from './AirportLoader';
-import AirportNearbyLoader from './AirportNearbyLoader';
+import { AirportDistanceLoader } from './AirporGPSLoaders';
 import AirporSearchItem from './AirportSearchItem';
 import { AirportCodeDistanceEntity, AirportEntity } from '../../utils/common.types';
 import filterAirports from './filterAirports';
@@ -11,13 +11,13 @@ const MAX_SEARCH_ITEMS = 10;
 
 const AirportSearch = () => {
   const [allAirports, setAllAirports] = useState<AirportEntity[]>([]);
-  const [nearbyAirports, setNearbyAirports] = useState<AirportCodeDistanceEntity[]>([]);
+  const [airportDistances, setAirportDistances] = useState<AirportCodeDistanceEntity[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [active, setActive] = useState(false);
 
-  const checkNearbyAirports = () => {
-    if (nearbyAirports.length > 0) {
-      let airports = nearbyAirports.map((item, index) => {
+  const checkAirportDistances = () => {
+    if (airportDistances.length > 0) {
+      let airports = airportDistances.map((item, index) => {
         const airport = allAirports.find(airport => airport.iata === item.iata);
        if (airport && index < MAX_NEARBY_AIRPORTS) {
           airport.distance = item.distance;
@@ -32,12 +32,12 @@ const AirportSearch = () => {
     new AirportLoader((data: any) => {
       setAllAirports(data);
     });
-    new AirportNearbyLoader((data: any) => {
-      setNearbyAirports(data);
+    new AirportDistanceLoader((data: any) => {
+      setAirportDistances(data);
     });
   }, []);
 
-  useEffect(() => checkNearbyAirports(), [nearbyAirports]);
+  useEffect(() => checkAirportDistances(), [airportDistances]);
 
   const searchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
@@ -50,7 +50,7 @@ const AirportSearch = () => {
   if (searchValue.length > 0) {
     matchedAirports = filterAirports(allAirports, searchValue, MAX_SEARCH_ITEMS);
   } else {
-    if (nearbyAirports.length > 0)
+    if (airportDistances.length > 0)
       matchedAirports = allAirports.slice(0, MAX_NEARBY_AIRPORTS);
   }
 
