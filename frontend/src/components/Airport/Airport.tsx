@@ -3,7 +3,7 @@ import { Route, Routes, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AirportEntity } from '../../utils/common.types';
 import AirportInfo, { AIRPORT_INFO_PAGE } from '../AirportInfo/AirportInfo';
-import AirportLoader from '../AirportSearch/AirportLoader';
+import AirportLoader from '../../loaders/AirportLoader';
 
 const Airport = () => {
   const { iata } = useParams();

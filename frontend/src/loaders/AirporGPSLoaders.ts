@@ -1,5 +1,5 @@
-import { GPSAquiredCallback, GPSCoordinates } from "../../utils/common.types";
-import DataLoader from "../../utils/DataLoader/DataLoader";
+import { GPSAquiredCallback, GPSCoordinates } from "../utils/common.types";
+import DataLoader from "./DataLoader";
 
 class AirportGPSLoader extends DataLoader {
   private coordinates: GPSCoordinates | null = null;

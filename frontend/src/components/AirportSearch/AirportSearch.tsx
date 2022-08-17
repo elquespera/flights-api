@@ -1,7 +1,7 @@
 import './AirportSearch.scss';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import AirportLoader from './AirportLoader';
-import { AirportDistanceLoader } from './AirporGPSLoaders';
+import AirportLoader from '../../loaders/AirportLoader';
+import { AirportDistanceLoader } from '../../loaders/AirporGPSLoaders';
 import AirporSearchItem from './AirportSearchItem';
 import { AirportCodeDistanceEntity, AirportEntity } from '../../utils/common.types';
 import filterAirports from './filterAirports';

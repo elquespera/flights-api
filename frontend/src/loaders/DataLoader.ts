@@ -1,5 +1,5 @@
 import axios from "axios";
-import { DataLoadedCallback } from "../common.types";
+import { DataLoadedCallback } from "../utils/common.types";
 
 class DataLoader {
   private baseUrl = 'http://localhost:4321/api/';

@@ -1,5 +1,5 @@
-import { DataLoadedCallback } from "../../utils/common.types";
-import DataLoader from "../../utils/DataLoader/DataLoader";
+import { DataLoadedCallback } from "../utils/common.types";
+import DataLoader from "./DataLoader";
 
 class AirportLoader extends DataLoader {
   constructor(callback?: DataLoadedCallback, iata = '') {
