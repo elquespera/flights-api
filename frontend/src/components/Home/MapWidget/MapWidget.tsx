@@ -6,7 +6,9 @@ const MapWidget = (
   props: { airports: AirportEntity[], center: GPSCoordinates | null }
 ) => {
   return (
-    <Map {...props} zoom={7}></Map> 
+    <div className='widget map-widget'>
+      <Map {...props} zoom={7}></Map>
+    </div> 
   )
 }
 

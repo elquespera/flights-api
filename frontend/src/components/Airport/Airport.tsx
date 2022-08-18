@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import './Airport.scss';
+import { useEffect, useState } from 'react';
 import { Route, Routes, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AirportEntity } from '../../utils/common.types';
-import AirportInfo, { AIRPORT_INFO_PAGE } from '../AirportInfo/AirportInfo';
+import AirportInfo from './AirportInfo/AirportInfo';
+import AirportSchedule, { AIRPORT_SCHEDULE_PAGE } from './AirportSchedule/AirportSchedule';
 import AirportLoader from '../../loaders/AirportLoader';
 
 const Airport = () => {
@@ -16,16 +18,8 @@ const Airport = () => {
   }, []);
  
   return (
-    <div className='airport-wrapper'>
-      {airportData 
-        ? <div className='airport-title'>
-            <div>{airportData.name}</div>
-            <div>{airportData.iata}</div>
-          </div> 
-        : ''
-      }
-
-      <nav>
+    <div className='airport-wrapper'>      
+      <nav className='airport-menu'>
         <ul>
           <li><Link to="">Info</Link></li>
           <li><Link to="departures">Departures</Link></li>
@@ -33,9 +27,9 @@ const Airport = () => {
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<AirportInfo />}/>
-        <Route path="/departures" element={<AirportInfo page={AIRPORT_INFO_PAGE.DEPARTURES}/>}/>
-        <Route path="/arrivals" element={<AirportInfo page={AIRPORT_INFO_PAGE.ARRIVALS}/>}/>
+        <Route path="/" element={<AirportInfo airport={airportData}/>} />
+        <Route path="/departures" element={<AirportSchedule page={AIRPORT_SCHEDULE_PAGE.DEPARTURES}/>}/>
+        <Route path="/arrivals" element={<AirportSchedule page={AIRPORT_SCHEDULE_PAGE.ARRIVALS}/>}/>
       </Routes>
     </div>
   )

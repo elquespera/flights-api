@@ -1,0 +1,15 @@
+.airport-info {
+  padding: 0;
+  height: 500px;
+  .map-wrapper {
+    justify-content: start;
+    height: auto;
+    .airport-map {
+      min-height: 120px;
+      height: 160px;
+    }
+  }
+  .info {
+    padding: 2em;
+  }
+}

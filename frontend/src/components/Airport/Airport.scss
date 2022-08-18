@@ -1,0 +1,13 @@
+.airport-menu {
+  margin-bottom: 2em;
+  ul {
+    display: flex;
+    gap: 1em;
+    li {
+    }
+
+    li.active {
+      font-weight: bold;
+    }
+  }
+}

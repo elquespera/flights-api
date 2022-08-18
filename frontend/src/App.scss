@@ -39,8 +39,13 @@ main {
   min-width: 300px;
   overflow: hidden;
 
+  h2 {
+    font-size: 1.7em;
+    margin-bottom: 1.5em;
+  }
+
   h3 {
-    font-size: 1.6em;
+    font-size: 1.4em;
     margin-bottom: 1.5em;
   }
 }

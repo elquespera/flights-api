@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AirportEntity, GPSCoordinates } from '../../utils/common.types';
 
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { formatMapUrl } from '../../utils/formatMapUrl';
 
 const MapRender = (status: Status) => {
   if (status === Status.SUCCESS) return <></>;
@@ -14,9 +15,10 @@ interface MapProps {
   airports: AirportEntity[],
   center: GPSCoordinates | null
   zoom: number,
+  openMapsOnClick?: Boolean,
 } 
 
-const GoogleMaps = ({ airports, center, zoom }: MapProps) => {
+const GoogleMaps = ({ airports, center, zoom, openMapsOnClick }: MapProps) => {
 
   const getCenter = (): google.maps.LatLngLiteral => {
     if (center) 
@@ -72,7 +74,13 @@ const GoogleMaps = ({ airports, center, zoom }: MapProps) => {
             color: 'white'
           }
         });
-        marker.addListener('click', () => navigate(`airport/${iata}`));
+        marker.addListener('click', () => {
+          if (openMapsOnClick) { 
+            window.open(formatMapUrl({ latitude, longitude }), '_blank');
+          } else {
+            navigate(`/airport/${iata}`);
+          }
+        });
         return marker;
       });    
     }
@@ -89,7 +97,7 @@ const GoogleMaps = ({ airports, center, zoom }: MapProps) => {
 
 const Map = (props: MapProps) => {
   return (
-    <div className='map-widget widget'>
+    <div className='map-wrapper'>
       <Wrapper 
         apiKey='putYourApiKeyHere'
         render={MapRender}>
