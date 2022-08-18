@@ -1,5 +1,5 @@
 import './Home.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AirportNearbyLoader } from '../../loaders/AirporGPSLoaders';
 import { AirportEntity, GPSCoordinates } from '../../utils/common.types';
 import MapWidget from './MapWidget/MapWidget';
@@ -21,7 +21,7 @@ const Home = () => {
       {nearbyAirports.length > 0
         ? <>
             <NearbyWidget airports={nearbyAirports.slice(0, 5)}/>
-            <MapWidget airports={nearbyAirports} coordinates={currentLocation}/>
+            <MapWidget airports={nearbyAirports} center={currentLocation} />
           </>
         : ''
       }
