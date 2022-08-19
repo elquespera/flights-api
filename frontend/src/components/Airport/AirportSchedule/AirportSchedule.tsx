@@ -47,8 +47,8 @@ const AirportSchedule = (
       </ul>
       {isMockData &&
         <p className='mock-data-warning'>
-          * Mock data is being used for flight schedule because I'm poor 
-            and freemium API limit has been reached.
+          * Mock data is being used for this flight schedule 
+            because I'm poor and free API limit has been reached.
         </p>
       }
       {showLaterFlights && flightsToDisplay < dataLength && 
