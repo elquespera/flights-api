@@ -1,16 +1,63 @@
 import './AirportSchedule.scss';
+import { AirportEntity, FlightEntity } from '../../../utils/common.types';
 import React, { useEffect, useState } from 'react';
+import FlightItem from './FlightItem/FlightItem';
 
 enum AIRPORT_SCHEDULE_PAGE {
-  ALL,
+  BOTH,
   DEPARTURES,
   ARRIVALS,
 }
 
-const AirportSchedule = ({ page = AIRPORT_SCHEDULE_PAGE.ALL, iata = '' }) => {
+const AirportSchedule = (
+  { page, airport, flights, flightsPerPage = 15, showLaterFlights = true, isMockData = false }: 
+  { page: number, airport?: AirportEntity, flights?: FlightEntity[], 
+    flightsPerPage?: number, showLaterFlights?: boolean, isMockData?: boolean }) => {
+
+  if (!flights || !airport) return null;
+  const [flightsToDisplay, setFlightsToDisplay] = useState(flightsPerPage);
+
+  const filterFlights = (flights: FlightEntity[], flightIsDeparture: boolean) => {
+    return flights.filter(flight => {
+      const IsDeparture = flight.departure?.airport === undefined;
+      return IsDeparture === flightIsDeparture;
+    });
+  }
+
+  let data = flights;
+  let title = 'Schedule';
+  switch (page) {
+    case AIRPORT_SCHEDULE_PAGE.DEPARTURES:
+      title = 'Departures';
+      data = filterFlights(flights, true);
+      break;
+    case AIRPORT_SCHEDULE_PAGE.ARRIVALS:
+      title = 'Arrivals';
+      data = filterFlights(flights, false);
+      break;
+  }
+  const dataLength = data.length;
+  data = data.slice(0, flightsToDisplay);
+  const flightList = data.map(flight => <FlightItem key={flight.number} flight={flight} />);
   return (
-    <div>
-      <h4>Info {page} {iata}</h4>
+    <div className='flight-schedule'>
+      <h2>{title}</h2>
+      <ul className='flight-list'>
+        {flightList}
+      </ul>
+      {isMockData &&
+        <p className='mock-data-warning'>
+          * Mock data is being used for flight schedule because I'm poor 
+            and freemium API limit has been reached.
+        </p>
+      }
+      {showLaterFlights && flightsToDisplay < dataLength && 
+        <button
+          className='show-more-flights' 
+          onClick={() => setFlightsToDisplay(flightsToDisplay + flightsPerPage)}>
+          Show later flights
+        </button>
+      }
     </div>
   )
 }

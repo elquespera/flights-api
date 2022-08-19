@@ -1,29 +1,39 @@
-class FlightEntity {
-  icao: string;
-  callsign: string;
+type FlightStatus = "Unknown" | "Expected" | "EnRoute" | "CheckIn" | "Boarding" | "GateClosed" | "Departed" | "Delayed" | "Approaching" | "Arrived" | "Canceled" | "Diverted" | "CanceledUncertain";
+type CodeshareStatus = "Unknown" | "IsOperator" | "IsCodeshared";
 
-  departureAirport?: string;
-  departureEstimate?: string;
-  departureDistance?: number;
-
-  arrivalAirport?: string;
-  arrivalEstimate?: string;
-  arrivalDistance?: number;
+interface FlightMovement {
+  airport?: {
+    name: string;
+    iata: string;
+  }
+  scheduledTimeLocal?: string;
+  actualTimeLocal?: string;
+  runwayTimeLocal?: string;
+  terminal?: string;
+  gate?: string;
+  checkInDesk?: string;
+  baggageBelt?: string;
 }
 
-class FlightOpenSkyEntity {
-  icao24: string;
-  firstSeen: number;
-  estDepartureAirport: string;
-  lastSeen: number;
-  estArrivalAirport: string;
-  callsign: string;
-  estDepartureAirportHorizDistance: number;
-  estDepartureAirportVertDistance: number;
-  estArrivalAirportHorizDistance: number;
-  estArrivalAirportVertDistance: number;
-  departureAirportCandidatesCount: number;
-  arrivalAirportCandidatesCount: number;
+interface FlightEntity {
+  number: string;
+  status: FlightStatus;
+  codeshareStatus: CodeshareStatus;
+  codeshare?: string[];
+  isCargo: boolean;
+  airline: {
+    name: string;
+  };
+  departure: FlightMovement;
+  arrival: FlightMovement;
+  aircraft: {
+    model?: string;
+  };
 }
 
-export { FlightEntity, FlightOpenSkyEntity }
+interface FlightData {
+  isFake: boolean;
+  data: FlightEntity[];
+}
+
+export { FlightEntity, FlightData };

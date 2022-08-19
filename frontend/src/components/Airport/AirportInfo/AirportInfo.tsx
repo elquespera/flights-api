@@ -1,10 +1,11 @@
 import './AirportInfo.scss';
 import React, { useEffect, useState } from 'react';
-import { AirportEntity } from '../../../utils/common.types';
+import { AirportEntity, FlightEntity } from '../../../utils/common.types';
 import Map from '../../Map/Map';
 import { formatMapUrl } from '../../../utils/formatMapUrl';
+import AirportSchedule, { AIRPORT_SCHEDULE_PAGE } from '../AirportSchedule/AirportSchedule';
 
-const AirportInfo = ({ airport }: { airport?: AirportEntity } ) => {
+const AirportInfo = ({ airport, flights, isMockData }: { airport?: AirportEntity, flights?: FlightEntity[], isMockData?: boolean }) => {
   if (!airport || !airport.latitude || !airport.longitude) 
     return <h3>Airport not found</h3>;
 
@@ -27,6 +28,14 @@ const AirportInfo = ({ airport }: { airport?: AirportEntity } ) => {
             {uct && <li><span className='info-label'>Timezone: </span>UCT+{Math.floor(uct / 60)}</li>}
           </ul>
         </div>
+      </div>
+      <div className='widget'>
+        <AirportSchedule 
+        page={AIRPORT_SCHEDULE_PAGE.BOTH} 
+        airport={airport} flights={flights} 
+        flightsPerPage={5} 
+        showLaterFlights={false}
+        isMockData />
       </div>
     </div>
   )
