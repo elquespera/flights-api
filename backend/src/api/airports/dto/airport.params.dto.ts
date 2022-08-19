@@ -1,4 +1,3 @@
-import { Type } from "class-transformer";
 import { IsArray, IsOptional, IsString, Length } from "class-validator";
 
 export class AirportParams {
@@ -10,6 +9,5 @@ export class AirportCodesQuery {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  // @Length(3)
   codes?: string[];
 }

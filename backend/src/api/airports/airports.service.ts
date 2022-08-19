@@ -34,6 +34,12 @@ export class AirportsService {
     return airport;
   }
 
+  async findByIcao(icao_code: string): Promise<AirportEntity> {
+    const airports = await this.airportInfo();
+    const airport = airports.find(({ icao }) => icao === icao_code);
+    return airport;
+  }
+
   async getDistance(coordinates: CoordinatesDto): Promise<AirportCodeDistanceEntity[]> {
     let airports = await this.airportInfo();
 
