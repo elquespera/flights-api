@@ -87,7 +87,11 @@ const GoogleMaps = ({ airports, center, zoom, openMapsOnClick }: MapProps) => {
     return () => {
       markers.forEach(marker => marker && marker.setMap(null));
     }
-  }, [map]);
+  }, [map, airports]);
+
+  useEffect(() => {
+    if (map) map.setCenter(getCenter());
+  }, [center]);
 
   return (
     <div ref={ref} className='airport-map' id={mapId}>
