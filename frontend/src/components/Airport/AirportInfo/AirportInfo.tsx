@@ -4,6 +4,7 @@ import { AirportEntity, FlightEntity } from '../../../utils/common.types';
 import Map from '../../Map/Map';
 import { formatMapUrl } from '../../../utils/formatMapUrl';
 import AirportSchedule, { AIRPORT_SCHEDULE_PAGE } from '../AirportSchedule/AirportSchedule';
+import UctTimer from './UctTimer/UctTimer';
 
 const AirportInfo = ({ airport, flights, isMockData }: { airport?: AirportEntity, flights?: FlightEntity[], isMockData?: boolean }) => {
   if (!airport || !airport.latitude || !airport.longitude) 
@@ -18,6 +19,7 @@ const AirportInfo = ({ airport, flights, isMockData }: { airport?: AirportEntity
         <Map airports={[airport]} center={coordiantes} zoom={6} openMapsOnClick={true}/>
         <div className='info'>
           <h3>{airport.name}</h3>
+          <UctTimer uct={airport.uct}/>
           <ul>
             {location && <li>{location}</li>}
             {latitude && <li><span className='info-label'>GPS: </span><a target='_blank' href={formatMapUrl(coordiantes)}>{latitude}, {longitude}</a></li>}

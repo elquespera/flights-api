@@ -5,8 +5,8 @@ header {
   flex-flow: column;
   align-items: center;
 
-  background: url('../hero.jpg'), linear-gradient(#9fa6a9, #f39352);
-  background-position: center;
+  background: url('../hero.svg'), linear-gradient(#9fa6a9, #f39352);
+  background-position: center 15%;
   background-size: cover;
   h1 {
     display: flex;
