@@ -34,7 +34,7 @@ const FlightTitle = (
       </div>
       <div className='airport-subtitle'>
         {flightNumber} | {airlineName}
-        {codeshare && codeshare.map(item => <div>{item}</div>)}
+        {codeshare && codeshare.map((item, index) => <div key={index}>{item}</div>)}
       </div>
     </div>
   );
