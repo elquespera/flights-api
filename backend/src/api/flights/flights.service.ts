@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 import * as path from 'path';
 import { AirportsService } from '../airports/airports.service';
@@ -12,10 +12,17 @@ export class FlightsService {
     private airportService: AirportsService
   ) {}
 
-  public async getAllSchedule(icao: string): Promise<FlightData> {
+  public async getAllSchedule(iata: string): Promise<FlightData> {
+    const airport = await this.airportService.findByIata(iata);
+    if (!airport) throw new NotFoundException('Airport not found!');
+    const icao = airport.icao;
+    if (!icao) throw new NotFoundException('Airport not found!');
+    // const dateFrom = 
+
     const apiOptions = {
       method: 'GET',
-      url: 'https://aerodatabox.p.rapidapi.com/flights/airports/icao/LKPR/2022-08-19T12:00/2022-08-19T23:59',
+      url: `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${icao}/2022-08-19T12:00/2022-08-19T23:59`,
+      // url: `https://aerodatabox.p.rapidapi.com/flights/airports/icao/LKPR/2022-08-19T12:00/2022-08-19T23:59`,
       params: {
         withLeg: true,
         direction: 'Both',

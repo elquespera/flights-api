@@ -34,9 +34,9 @@ export class AirportsService {
     return airport;
   }
 
-  async findByIcao(icao_code: string): Promise<AirportEntity> {
+  async findByIata(iata_code: string): Promise<AirportEntity> {
     const airports = await this.airportInfo();
-    const airport = airports.find(({ icao }) => icao === icao_code);
+    const airport = airports.find(({ iata }) => iata === iata_code);
     return airport;
   }
 
