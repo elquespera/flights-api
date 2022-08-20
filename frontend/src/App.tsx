@@ -13,6 +13,11 @@ const App = () => {
         <header>
           <h1>Search airports</h1>
           <AirportSearch />
+          <a className='attribution-link' 
+            href='https://www.vecteezy.com/free-vector/nature'
+            target='_blank'>
+              Nature Vectors by Vecteezy'
+          </a>
         </header>
         <section className='content'>
           <Routes>

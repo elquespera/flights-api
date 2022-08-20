@@ -2,10 +2,11 @@ header {
   height: 300px;
   width: 100%;
   display: flex;
+  position: relative;
   flex-flow: column;
   align-items: center;
 
-  background: url('../hero.svg'), linear-gradient(#9fa6a9, #f39352);
+  background: url('./../hero.svg'), linear-gradient(#9fa6a9, #f39352);
   background-position: center 15%;
   background-size: cover;
   h1 {
@@ -20,6 +21,13 @@ header {
     text-shadow: 0px 0px 30px #000;
     color: white;
     z-index: 1;
+  }
+
+  a.attribution-link {
+    position: absolute;
+    right: 0.2em;
+    bottom: 0.2em;
+    font-size: 0.8em;
   }
 }
 
