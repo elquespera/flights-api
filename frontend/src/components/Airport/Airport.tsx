@@ -15,24 +15,28 @@ const Airport = () => {
     arrivals: 'arrivals',
     all: 'all'
   }
-  const { iata } = useParams();
+
   const [airportData, setAirportData] = useState<AirportEntity | undefined>();
   const [flightData, setFlightData] = useState<FlightEntity[] | undefined>();
   const [isMockData, setIsMockData] = useState(false);
+  const [iata, setIata] = useState<string | undefined>();
+
+  const params = useParams();
+  const newIata = params['iata'];
+  if (newIata !== iata) setIata(params?.iata);
   
   useEffect(() => {
+    if (!iata) return;
+
     new AirportLoader((data: any) => {
       setAirportData(data);
     }, iata);
-  }, []);
 
-  useEffect(() => {
     new ScheduleLoader((data: any) => {
-      const middle = Math.floor(data.length / 2);
       setFlightData(data?.data);
       setIsMockData(data.isFake);
-    }, iata);
-  }, []);
+    }, iata);    
+  }, [iata]);
  
   return (
     <div className='airport-wrapper'>      
