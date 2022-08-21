@@ -6,6 +6,7 @@ import * as path from 'path';
 import airportCodes from './airport.codes';
 import { CoordinatesDto } from '../../utils/coordinates.dto';
 import { calculateDistance } from 'src/utils/utils';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AirportsService {
@@ -13,7 +14,9 @@ export class AirportsService {
   private _airportInfoStripped: AirportEntity[];  
   private dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'airports.json');
   private expiry = 30 * 24 * 60 * 60 * 1000; // 1 day
-  private nearbyRange = 300; //km
+
+  constructor(private configService: ConfigService) {}
+
 
   async getAll(): Promise<AirportEntity[]> {
     return this.airportInfoStripped();
@@ -76,11 +79,11 @@ export class AirportsService {
       method: 'GET',
       url: 'https://airport-info.p.rapidapi.com/airport',
       headers: {
-        'X-RapidAPI-Key': 'putYourApiKeyHere',
+        'X-RapidAPI-Key': this.configService.get<string>('AIRPORT_API_KEY'),
         'X-RapidAPI-Host': 'airport-info.p.rapidapi.com'
       }
     };
-
+    
     let stats:fs.Stats;
     try {
       stats = await fsPromises.stat(this.dataFileName);

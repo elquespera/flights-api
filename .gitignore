@@ -1,6 +1,6 @@
 *node_modules/
 *dist/
 thunder-tests/
-.env
+.env*
 
 backend/data/*

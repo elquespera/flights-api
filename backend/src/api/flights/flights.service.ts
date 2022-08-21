@@ -1,4 +1,5 @@
 import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import * as path from 'path';
 import { AirportsService } from '../airports/airports.service';
@@ -7,9 +8,11 @@ import { FlightData, FlightEntity } from './flight.entity';
 @Injectable()
 export class FlightsService {
 
+
   constructor(
     @Inject(forwardRef(() => AirportsService))
-    private airportService: AirportsService
+    private airportService: AirportsService,
+    private configService: ConfigService,
   ) {}
 
   public async getAllSchedule(iata: string): Promise<FlightData> {
@@ -17,11 +20,12 @@ export class FlightsService {
     if (!airport) throw new NotFoundException('Airport not found!');
     const icao = airport.icao;
     if (!icao) throw new NotFoundException('Airport not found!');
-    // const dateFrom = 
+
+    const url = `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${icao}/2022-08-19T12:00/2022-08-19T23:59`;
 
     const apiOptions = {
       method: 'GET',
-      url: `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${icao}/2022-08-19T12:00/2022-08-19T23:59`,
+      url,
       // url: `https://aerodatabox.p.rapidapi.com/flights/airports/icao/LKPR/2022-08-19T12:00/2022-08-19T23:59`,
       params: {
         withLeg: true,
@@ -33,10 +37,11 @@ export class FlightsService {
         withLocation: true,
       },
       headers: {
-        'X-RapidAPI-Key': 'putYourApiKeyHere',
+        'X-RapidAPI-Key': this.configService.get<string>('AERODATABOX_API_KEY'),
         'X-RapidAPI-Host': 'aerodatabox.p.rapidapi.com'
       }
     }
+
     let isFake = true;
 
     // const response = await axios(apiOptions);

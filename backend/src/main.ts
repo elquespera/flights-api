@@ -3,13 +3,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true});
+  const cors = process.env.NODE_ENV === 'development';
+  const app = await NestFactory.create(AppModule, { cors });
 
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
-  const port = process.env.PORT || 4321;
+
+  const port = process.env.PORT || 3000;
   await app.listen(port);
+
   console.log(`🚀 Server has started on http://localhost:${port}`);
 }
 bootstrap();
