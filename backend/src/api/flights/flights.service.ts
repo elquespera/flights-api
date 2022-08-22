@@ -16,17 +16,25 @@ export class FlightsService {
   ) {}
 
   public async getAllSchedule(iata: string): Promise<FlightData> {
+    const formatDate = (date: number): string => {
+      return new Date(date).toISOString().slice(0, 16);
+    }
+
     const airport = await this.airportService.findByIata(iata);
     if (!airport) throw new NotFoundException('Airport not found!');
     const icao = airport.icao;
     if (!icao) throw new NotFoundException('Airport not found!');
 
-    const url = `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${icao}/2022-08-19T12:00/2022-08-19T23:59`;
+    const uct = (airport.uct || 0) * 60 * 1000;
+    const now = Date.now() + uct;
+    const from = formatDate(now - 1 * 60 * 60 * 1000);
+    const to = formatDate(now + 11 * 60 * 60 * 1000 - 60 * 1000);
+    const url = `https://aerodatabox.p.rapidapi.com/flights/airports/icao/${icao}/${from}/${to}`;
+    console.log(url);
 
     const apiOptions = {
       method: 'GET',
       url,
-      // url: `https://aerodatabox.p.rapidapi.com/flights/airports/icao/LKPR/2022-08-19T12:00/2022-08-19T23:59`,
       params: {
         withLeg: true,
         direction: 'Both',
