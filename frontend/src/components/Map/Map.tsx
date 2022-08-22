@@ -103,7 +103,7 @@ const Map = (props: MapProps) => {
   return (
     <div className='map-wrapper'>
       <Wrapper 
-        apiKey='putYourApiKeyHere'
+        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
         render={MapRender}>
           <GoogleMaps {...props} />
       </Wrapper>
