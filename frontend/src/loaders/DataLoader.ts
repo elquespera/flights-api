@@ -2,7 +2,7 @@ import axios from "axios";
 import { DataLoadedCallback } from "../utils/common.types";
 
 class DataLoader {
-  private baseUrl = 'http://localhost:4321/api/';
+  private baseUrl = import.meta.env.VITE_API_URL;
   protected url: string;
   protected params: any;
   protected callback: DataLoadedCallback | undefined;
@@ -10,6 +10,7 @@ class DataLoader {
   public error: any = null;
 
   constructor(url: string, params?: any, callback?: DataLoadedCallback) {
+    console.log();
     this.url = this.baseUrl + url;
     this.params = params;
     this.callback = callback;
