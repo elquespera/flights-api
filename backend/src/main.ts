@@ -4,7 +4,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const cors = process.env.NODE_ENV !== 'production';
-  console.log(cors);
   const app = await NestFactory.create(AppModule, { cors });
 
   app.useGlobalPipes(

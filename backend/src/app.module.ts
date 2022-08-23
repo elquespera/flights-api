@@ -15,7 +15,10 @@ import { configuration } from './env/config';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'frontend/dist'),
-      exclude: ['api/']
+      exclude: ['api/'],
+      serveStaticOptions: {
+        lastModified: false,
+      }
     }),
     AirportsModule,
     FlightsModule,
