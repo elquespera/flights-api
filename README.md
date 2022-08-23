@@ -6,7 +6,7 @@ Flights API is a single-page web app that allows to monitor flight departures an
 
 ## Working sample
 
-  The app is deployed [here](https://flights.pavelgrinkevich.com) using [Google Cloud Platform](https://cloud.google.com/) infrastructure.
+  The app is at [flights.pavelgrinkevich.com](https://flights.pavelgrinkevich.com) using [Google Cloud Platform](https://cloud.google.com/) infrastructure.
 
 ## Technologies
 
@@ -16,3 +16,7 @@ Flights API is a single-page web app that allows to monitor flight departures an
 ### Frontend
 
   [React Javascript Library v18.2](https://reactjs.org/) is used for the frontend. Routes are implemented with [ReactRouter v6](https://reactrouter.com/). [Vite](https://vitejs.dev/) is used as a fast and comprehensive alternative for React development envinronment. [Sass preprocessor](https://sass-lang.com/) is used for CSS. Airport position and nearby airports are shown with custom markers and labels with [Google Maps API](https://developers.google.com/maps).
+
+## Features
+
+  App's home screen shows a list and a map of nearby airports based on user's location. Airport links and map markers are clickable and lead to an airport page that provides airport information and a few current departures and arrivals. Full departures and arrivals as well as all aircraft movements are also available..
