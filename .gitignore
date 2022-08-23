@@ -3,4 +3,6 @@
 thunder-tests/
 .env*
 
+replace.txt
+
 backend/data/*
