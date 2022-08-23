@@ -38,7 +38,7 @@ const AirportSchedule = (
   }
   const dataLength = data.length;
   data = data.slice(0, flightsToDisplay);
-  const flightList = data.map(flight => <FlightItem key={flight.number} flight={flight} />);
+  const flightList = data.map(flight => <FlightItem key={flight.number} flight={flight} uct={airport?.uct} />);
   return (
     <div className='flight-schedule'>
       <h2>{title}</h2>
@@ -48,7 +48,7 @@ const AirportSchedule = (
       {isMockData &&
         <p className='mock-data-warning'>
           * Mock data is being used for this flight schedule 
-            because I'm poor and free API limit has been reached.
+            because the developer is poor and free API limit has been reached.
         </p>
       }
       {showLaterFlights && flightsToDisplay < dataLength && 

@@ -4,9 +4,11 @@ import { formatDateTime } from '../../../../utils/formatDateTime';
 
 type StringOrUndefined = string | undefined;
 
-const FlightTime = ({ scheduledTime, actualTime }: { scheduledTime: StringOrUndefined, actualTime: StringOrUndefined }) => {
-  const scheduled = formatDateTime(scheduledTime);
-  const actual = formatDateTime(actualTime);
+const FlightTime = (
+  { scheduledTime, actualTime, uct }: 
+  { scheduledTime: StringOrUndefined, actualTime: StringOrUndefined, uct: number | undefined }) => {
+  const scheduled = formatDateTime(scheduledTime, uct);
+  const actual = formatDateTime(actualTime, uct);
   const late = actual.milliseconds > scheduled.milliseconds;
   return (
   <div className='flight-time'>
@@ -57,14 +59,14 @@ const FlightInfoItem = ({ title, info, customClass }: { title: StringOrUndefined
   );
 }
 
-const FlightItem = ({ flight }: {flight: FlightEntity}) => {
+const FlightItem = ({ flight, uct }: {flight: FlightEntity, uct: number | undefined}) => {
   const isDeparture = flight.departure?.airport === undefined;
   const destinationAirport = isDeparture ? flight.arrival.airport : flight.departure.airport;
   const source = isDeparture ? flight.departure : flight.arrival;
 
   return (
     <li className='flight-item'>
-      <FlightTime scheduledTime={source.scheduledTimeLocal} actualTime={source.actualTimeLocal} />
+      <FlightTime scheduledTime={source.scheduledTimeLocal} actualTime={source.actualTimeLocal} uct={uct}/>
       <FlightTitle isDeparture={isDeparture} airportName={destinationAirport?.name}
         airportIata={destinationAirport?.iata} flightNumber={flight.number} 
         airlineName={flight.airline.name} codeshare={flight.codeshare}/>

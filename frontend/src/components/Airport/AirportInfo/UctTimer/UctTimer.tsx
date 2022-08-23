@@ -10,9 +10,7 @@ const UctTimer = ({ uct = 0 }: { uct?: number }) => {
       now += uct * 60 * 1000;
     }
     const date = new Date(now);
-    const hours = String(date.getUTCHours()).padStart(2, '0');
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    setTime(`${hours}:${minutes}`);
+    setTime(date.toLocaleTimeString("en" , { timeStyle: "short", timeZone: "UTC" }));
   }
 
   useEffect(() => {

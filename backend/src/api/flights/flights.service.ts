@@ -50,12 +50,14 @@ export class FlightsService {
       }
     }
 
-    let isFake = true;
 
+    // Real data
+    // let isFake = false;
     // const response = await axios(apiOptions);
     // let rawData = response.data;
 
     // Mock data
+    let isFake = true;
     const dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'schedule1.json');
     let rawData = await import(dataFileName);
 
