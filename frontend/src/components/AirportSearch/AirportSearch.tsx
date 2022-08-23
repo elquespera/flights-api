@@ -18,6 +18,10 @@ const AirportSearch = () => {
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
+  const openSearch = () => setSearchStatus(true);
+  const closeSearch = () => setSearchStatus(false);
+  const inputElement = (): HTMLInputElement | null => inputRef?.current ? inputRef.current as HTMLInputElement : null;
+
   const checkAirportDistances = () => {
     if (airportDistances.length > 0) {
       let airports = airportDistances.map((item, index) => {
@@ -33,11 +37,10 @@ const AirportSearch = () => {
 
   const windowKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      setSearchStatus(false);
+      closeSearch();
     } 
-    else if (inputRef?.current) {
-      const input = inputRef.current as HTMLInputElement;
-      input.focus();
+    else if (inputElement()) {
+      inputElement()?.focus();
     }
   }  
 
@@ -61,11 +64,6 @@ const AirportSearch = () => {
     setSearchValue(value);
   }
 
-  // const 
-
-  const openSearch = () => setSearchStatus(true);
-  const closeSearch = () => setSearchStatus(false);
-
   useEffect(() => {
     if (searchStatus) window.scrollTo(0, 0);
     document.body.style.overflow = searchStatus ? 'hidden' : 'auto';
@@ -83,10 +81,8 @@ const AirportSearch = () => {
   function selectAirport(name: string, iata: string) {
     navigate(`/airport/${iata}`);
     closeSearch();
-    if (inputRef?.current) {
-      const input = inputRef.current as HTMLInputElement;
-      input.value = name;
-    }
+    const input = inputElement();
+    if (input) input.value = name;
   }
 
   const matched = matchedAirports.map(({ name, stripped_name, iata, distance }) => {
@@ -105,6 +101,7 @@ const AirportSearch = () => {
     <div className={'airport-search ' + (searchStatus ? 'active' : '')}>
       <input type='text'
         ref={inputRef}
+        spellCheck={false}
         className='airport-search-input' 
         placeholder='Choose airport'
         onChange={searchInputChange}
