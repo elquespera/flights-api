@@ -1,9 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import axios from 'axios';
-import * as fsPromises from 'fs/promises';
-import * as fs from 'fs';
 import * as path from 'path';
-import airportCodes from './airport.codes';
 import { CoordinatesDto } from '../../utils/coordinates.dto';
 import { calculateDistance } from 'src/utils/utils';
 import { ConfigService } from '@nestjs/config';
@@ -13,7 +9,6 @@ export class AirportsService {
   private _airportInfo: AirportEntity[];  
   private _airportInfoStripped: AirportEntity[];  
   private dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'airports.json');
-  private expiry = 30 * 24 * 60 * 60 * 1000; // 1 day
 
   constructor(private configService: ConfigService) {}
 
@@ -73,53 +68,9 @@ export class AirportsService {
       .sort((a, b) => a.distance - b.distance)
       .slice(0, max_count);
   }
-  
-  private async checkData() {
-    const apiOptions = {
-      method: 'GET',
-      url: 'https://airport-info.p.rapidapi.com/airport',
-      headers: {
-        'X-RapidAPI-Key': this.configService.get<string>('AIRPORT_API_KEY'),
-        'X-RapidAPI-Host': 'airport-info.p.rapidapi.com'
-      }
-    };
-    
-    let stats:fs.Stats;
-    try {
-      stats = await fsPromises.stat(this.dataFileName);
-    } catch (e) {};
-
-    const fetchFresh = (!stats || new Date().getTime() - stats.mtimeMs > this.expiry );
-    let res = [];
-
-    if (fetchFresh) {
-      console.log('Fetching airport data...');
-      res = await Promise.all(
-        airportCodes.map(async (iata) => {
-          try {
-            const response = await axios({ ...apiOptions, params: { iata } });
-            return response.data;
-          } catch(e) {
-            return iata;
-          }
-        })
-      );
-      res = res.filter(info => info.id);
-      res = res.map(airport => {
-        return {
-          ...airport, 
-          stripped_name: airport.name.replace(/Airport|airport|International|international/g, '').trim(),
-        }
-      });
-
-      await fsPromises.writeFile(this.dataFileName, JSON.stringify(res), { flag: 'w' });
-      console.log(`Fetched ${res.length} airports!`);
-    }
-  }
 
   private async airportInfo(): Promise<AirportEntity[]> {
     if (this._airportInfo) return this._airportInfo;
-    await this.checkData();
     this._airportInfo = await import(this.dataFileName);
     return this._airportInfo;
   }
