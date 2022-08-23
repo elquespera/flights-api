@@ -31,6 +31,16 @@ const AirportSearch = () => {
     }
   }
 
+  const windowKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      setSearchStatus(false);
+    } 
+    else if (inputRef?.current) {
+      const input = inputRef.current as HTMLInputElement;
+      input.focus();
+    }
+  }  
+
   useEffect(() => {
     new AirportLoader((data: any) => {
       setAllAirports(data);
@@ -39,11 +49,6 @@ const AirportSearch = () => {
       setAirportDistances(data);
     });
 
-    const windowKeyPress = (event: KeyboardEvent) => {
-      if (searchStatus && event.key === 'Escape') {
-        setSearchStatus(false);
-      }
-    }
     window.addEventListener('keydown', windowKeyPress);
     return () => window.removeEventListener('keydown', windowKeyPress);
   }, []);
@@ -55,6 +60,8 @@ const AirportSearch = () => {
     value = value.toLocaleLowerCase().trim();
     setSearchValue(value);
   }
+
+  // const 
 
   const openSearch = () => setSearchStatus(true);
   const closeSearch = () => setSearchStatus(false);
@@ -102,6 +109,7 @@ const AirportSearch = () => {
         placeholder='Choose airport'
         onChange={searchInputChange}
         onFocus={openSearch}
+        onKeyDown={() => !searchStatus && openSearch()}
         onClick={() => !searchStatus && openSearch()}
       />
       <div className="airport-search-flyout">
