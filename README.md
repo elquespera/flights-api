@@ -2,6 +2,8 @@
 
 Flights API is a single-page web app that allows to monitor flight departures and arrivals at various airports around the world. Developed with modern technologies, such as [React v18.2](https://reactjs.org/) and [NestJs v9.0](https://nestjs.com/), it uses api endpoints to obtain data on schedules and delays.
 
+![App Screenshot](screenshot.png)
+
 ## Working sample
 
   The app is deployed [here](https://flights.pavelgrinkevich.com) using [Google Cloud Platform](https://cloud.google.com/) infrastructure.
