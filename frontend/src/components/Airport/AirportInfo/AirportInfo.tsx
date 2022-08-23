@@ -19,15 +19,14 @@ const AirportInfo = ({ airport, flights, isMockData }: { airport?: AirportEntity
         <Map airports={[airport]} center={coordiantes} zoom={6} openMapsOnClick={true}/>
         <div className='info'>
           <h3>{airport.name}</h3>
-          <UctTimer uct={airport.uct}/>
           <ul>
+            {uct && <li><span className='info-label'>Local time: </span><UctTimer uct={uct} /></li>}
             {location && <li>{location}</li>}
             {latitude && <li><span className='info-label'>GPS: </span><a target='_blank' href={formatMapUrl(coordiantes)}>{latitude}, {longitude}</a></li>}
             {iata && <li><span className='info-label'>IATA: </span>{iata}</li>}
             {icao && <li><span className='info-label'>ICAO: </span>{icao}</li>}
-            {website && <li><span className='info-label'>Website: </span><a href={website}>{website}</a></li>}
+            {website && <li><span className='info-label'>Website: </span><a target='_blank' href={website}>{website}</a></li>}
             {phone && <li><span className='info-label'>Phone: </span><a href={`tel:${phone}`}>{phone}</a></li>}
-            {uct && <li><span className='info-label'>Timezone: </span>UCT+{Math.floor(uct / 60)}</li>}
           </ul>
         </div>
       </div>
