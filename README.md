@@ -19,4 +19,4 @@ Flights API is a single-page web app that allows to monitor flight departures an
 
 ## Features
 
-  App's home screen shows a list and a map of nearby airports based on user's location. Airport links and map markers are clickable and lead to an airport page that provides airport information and a few current departures and arrivals. Full departures and arrivals as well as all aircraft movements are also available..
+  App's home screen shows a list and a map of nearby airports based on user's location. Airport links and map markers are clickable and lead to an airport page that provides airport information and a few current departures and arrivals. Full departures and arrivals as well as all aircraft movements are also available from there. All times are displayed in airport's time zone.
