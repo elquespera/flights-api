@@ -1,6 +1,6 @@
 import './App.scss';
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Airport from './components/Airport/Airport';
 import AirportSearch from './components/AirportSearch/AirportSearch';
@@ -11,17 +11,21 @@ const App = () => {
     <main>
       <BrowserRouter>
         <header>
-          <h1>Search airports</h1>
+          <h1><Link to='/'>Search airports</Link></h1>
           <AirportSearch />
           <a className='attribution-link' 
             href='https://www.vecteezy.com/free-vector/nature'
             target='_blank'>
-              Nature Vectors by Vecteezy'
+              Nature Vectors by Vecteezy
           </a>
+          <div className='about-links'>
+            <a className='github-link' target='_blank' href='https://github.com/elquespera/flights-api' title='Github repo' />
+            <a className='portfolio-link' target='_blank' href='https://pavelgrinkevich.com' title='My portfolio' />
+          </div>
         </header>
         <section className='content'>
           <Routes>
-            <Route index element={<Home />}/>
+            <Route path="*" element={<Home />}/>
             <Route path="airport">
               <Route path=":iata/*" element={<Airport />} />
             </Route>

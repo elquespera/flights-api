@@ -27,7 +27,36 @@ header {
     position: absolute;
     right: 0.2em;
     bottom: 0.2em;
-    font-size: 0.8em;
+    font-size: 0.7em;
+    opacity: 0.7;
+  }
+
+  .about-links {
+    position: absolute;
+    left: 0.8em;
+    bottom: 0.8em;
+    display: flex;
+    gap: 1em;
+
+    a {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      background-position: center;
+      background-repeat: no-repeat ;
+      filter: invert(1);
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+      &.github-link {
+        background-image: url('./../github.svg');
+      }
+      &.portfolio-link {
+        background-image: url('./../portfolio.svg');
+      }
+    }
   }
 }
 
