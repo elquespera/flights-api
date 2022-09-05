@@ -58,7 +58,7 @@ export class FlightsService {
 
     // Mock data
     let isFake = true;
-    const dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'schedule1.json');
+    const dataFileName = path.resolve(__dirname, '..', '..', '..', 'data', 'schedule.json');
     let rawData = await import(dataFileName);
 
 
