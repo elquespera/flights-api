@@ -1,0 +1,25 @@
+.flight-schedule {
+  display: flex;
+  flex-flow: column nowrap;
+  h2 {
+    margin: 1em 0;
+    font-size: clamp(2.3em, 10vw, 3.5em);
+  }
+  .mock-data-warning {
+    margin-top: 2em;
+    font-size: 0.8em;
+    color: rgba(200, 20, 20, 0.6);
+    align-self: flex-start;
+  }
+  .show-more-flights {
+    margin-top: 3em;
+    font-weight: bold;
+  }
+}
+
+.widget .flight-schedule {
+  h2 {
+    margin: 0.2em;
+    font-size: 1.8em;
+  }
+}

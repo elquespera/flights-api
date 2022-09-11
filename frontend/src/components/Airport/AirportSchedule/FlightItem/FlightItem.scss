@@ -1,0 +1,78 @@
+.flight-item {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas: "time title title title";
+  gap: 0.8em;
+  padding: 0.8em 0;
+  border-bottom: solid 1px lightgray;
+  font-size: clamp(0.8em, 4vw, 1.1em);
+
+  &:last-of-type {
+    border: none;
+  }
+
+  .flight-time {
+    display: flex;
+    flex-flow: column nowrap;
+    font-weight: bold;
+    font-size: 0.9em;
+    grid-area: time;
+    width: fit-content;
+
+    .early {
+      color: green;
+    }
+    .late {
+      color: red;
+    }
+    .flight-date {
+      font-size: 0.8em;
+      font-weight: normal;
+      color:rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .airport-title {
+    grid-area: title;
+    .destination-title {
+      font-size: 1em;
+      font-weight: bold;
+      display: flex;
+      gap: 0.3em;
+      align-items: center;
+    }
+    .airport-subtitle {
+      padding-left: 2.4em;
+      font-size: 0.8em;
+    }
+    .flight-info-item {
+      font-size: 0.8;
+
+    }
+  }
+  .flight-info-item {
+    font-size: 0.8em;
+    .flight-info-title {
+      color: rgba(0, 0, 0, 0.6);    
+    }
+    .flight-info-piece {
+      &.terminal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.4em;
+        height: 1.4em;
+        border-radius: 50%;
+        line-height: 1;
+        color: white;
+        background-color: black;
+      }
+      &.gate, &.baggage {
+        width: max-content;
+        color: white;
+        background-color: black;
+        padding: 0 0.4em;
+      }
+    }
+  }
+}

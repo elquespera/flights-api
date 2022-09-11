@@ -1,0 +1,88 @@
+header {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  position: relative;
+  flex-flow: column;
+  align-items: center;
+
+  background: url('./../hero.svg'), linear-gradient(#9fa6a9, #f39352);
+  background-position: center 15%;
+  background-size: cover;
+  h1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: clamp(280px, 90%, 900px);
+    margin-top: 40px;
+    height: 60px;
+    line-height: 1;
+    font-size: clamp(28px, 10vw, 48px);
+    text-shadow: 0px 0px 30px #000;
+    color: white;
+    z-index: 1;
+  }
+
+  a.attribution-link {
+    position: absolute;
+    right: 0.2em;
+    bottom: 0.2em;
+    font-size: 0.7em;
+    opacity: 0.7;
+  }
+
+  .about-links {
+    position: absolute;
+    left: 0.8em;
+    bottom: 0.8em;
+    display: flex;
+    gap: 1em;
+
+    a {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      background-position: center;
+      background-repeat: no-repeat ;
+      filter: invert(1);
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+      &.github-link {
+        background-image: url('./../github.svg');
+      }
+      &.portfolio-link {
+        background-image: url('./../portfolio.svg');
+      }
+    }
+  }
+}
+
+main {
+  .content {
+    display: block;
+    width: min(100%, 900px);
+    margin: 2em auto;
+    padding: 1em;
+  }
+}
+
+.widget {
+  padding: 2em;
+  border: 1px solid #c8c8c8;
+  border-radius: 1em;
+  min-width: 300px;
+  overflow: hidden;
+
+  h2 {
+    font-size: 1.7em;
+    margin-bottom: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.4em;
+    margin-bottom: 1.5em;
+  }
+}

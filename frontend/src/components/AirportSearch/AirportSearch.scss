@@ -1,0 +1,100 @@
+.airport-search {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+
+
+  .airport-search-input {
+    padding: 0.8em 1.5em;
+    width: clamp(220px, 90%, 900px);
+    height: 50px;
+    position: relative;
+    z-index: 10;
+    transition: 
+      transform 0.3s ease-out, 
+      width 0.3s ease-out 0.1s;
+  }
+
+  .airport-search-flyout {
+    display: none;
+    position: absolute;
+    flex-flow: column nowrap;
+    align-items: center;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 100vh;
+    padding-top: 4em;
+    background-color: rgba(244, 244, 244, 0.85);
+    backdrop-filter: blur(6px);
+
+    .flyout-back-button {
+      position: absolute;
+      top: 1.6em;
+      left: 0.5em;
+      width: 2em;
+      height: 2em;
+      opacity: 0;
+    }
+  }
+
+  &.active {
+    .airport-search-input {
+      width: clamp(160px, 80%, 1100px);
+      transform: translateY(-110px);
+    }
+    .airport-search-flyout {
+      display: flex;
+    }
+    .flyout-back-button {
+      opacity: 1;
+    }
+  }  
+
+  ul.airport-search-list {
+    display: flex;
+    flex-flow: column;
+    cursor: pointer;
+    width: clamp(280px, 80%, 1100px);
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5em 1em;
+
+      &:hover {
+        background-color: white;
+      }
+
+      .airport-search-distance {
+        padding: 0.2em 0.4em;
+        white-space: nowrap;
+        border-radius: 0.4em;
+        font-size: 0.8em;
+        color: white;
+        background-color: firebrick;
+      }
+
+      .airport-search-list-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+      }
+    }
+    .airport-search-no-match {
+      display: flex;
+      padding-top: 1em;
+      justify-content: center;
+      text-align: center;
+      font-size: 1.5em;
+      opacity: 0.6;
+    }    
+  }
+
+}

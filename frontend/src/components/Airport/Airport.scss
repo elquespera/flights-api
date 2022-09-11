@@ -1,0 +1,17 @@
+.airport-menu {
+  margin-bottom: 2em;
+  ul {
+    display: flex;
+    gap: 1em;
+    li {
+      a {
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.5);
+        &.active, &:hover {
+          color: black;
+          border-bottom: 2px solid black;
+        }
+      }
+    }
+  }
+}
